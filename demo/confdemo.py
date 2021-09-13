@@ -25,4 +25,3 @@ class TestConf:
 p = Path("testdata.conf")
 conf = TestConf.load(toml.load(p))
 print(conf)
-    
