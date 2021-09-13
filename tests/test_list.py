@@ -14,7 +14,7 @@ def test_list_str():
     class TestConf:
         keyword: list[str]
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.keyword == ["value1", "value2", "value3"]
     assert isinstance(conf.keyword, list)
@@ -32,7 +32,7 @@ def test_list_int():
     class TestConf:
         keyword: list[int]
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.keyword == [1, 2, 3]
     assert isinstance(conf.keyword, list)
@@ -50,7 +50,7 @@ def test_list_float():
     class TestConf:
         keyword: list[float]
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.keyword == [1.5, 2.5, 3.5]
     assert isinstance(conf.keyword, list)
@@ -68,7 +68,7 @@ def test_list_bool():
     class TestConf:
         keyword: list[bool]
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.keyword == [True, False, True]
     assert isinstance(conf.keyword, list)
@@ -88,7 +88,7 @@ def test_list_datetime():
         without_tz: list[datetime]
         with_tz: list[datetime]
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.without_tz == [datetime(1985, 2, 8, 12, 34, 56), datetime(1985, 3, 8, 12, 34, 56), datetime(1985, 4, 8, 12, 34, 56)]
     assert isinstance(conf.without_tz, list)
@@ -109,7 +109,7 @@ def test_list_date():
     class TestConf:
         keyword: list[date]
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.keyword == [date(1985, 2, 8), date(1985, 3, 8), date(1985, 4, 8)]
     assert isinstance(conf.keyword, list)
@@ -127,7 +127,7 @@ def test_list_time():
     class TestConf:
         keyword: list[time]
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.keyword == [time(12, 34, 56), time(12, 34, 57), time(12, 34, 58)]
     assert isinstance(conf.keyword, list)
@@ -145,7 +145,7 @@ def test_list_list_int():
     class TestConf:
         keyword: list[list[int]]
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.keyword == [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     assert isinstance(conf.keyword, list)

@@ -20,10 +20,11 @@ class SectionField(Field):
         attrs_joined = ", ".join(attrs)
         return f"SectionField({attrs_joined})"
 
-    def parse(self, dataval: dict, path: str):
+    def parse(self, dataval: dict, path: str, obj=None):
+        if obj is None:
+            obj = self.type()
         if dataval is MISSING:
             return self.get_default(path)
-        obj = self.type()
         for name, f in self.subfields.items():
             subpath = f"{path}.{name}"
             subdataval = dataval.get(name, MISSING)

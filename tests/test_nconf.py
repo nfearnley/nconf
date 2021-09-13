@@ -26,7 +26,6 @@ def test_nconf():
             prefix: str
             name: str
             height: int = 6
-            #weight: float = field(default=4)
 
         @section
         class discord:
@@ -38,7 +37,7 @@ def test_nconf():
         class api:
             cuttly: str
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
     assert conf.bot.prefix == ";"
     assert conf.bot.name == "Beep boop"
     assert conf.bot.height == 6

@@ -16,7 +16,7 @@ def test_section():
         class title:
             keyword: str
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.title.keyword == "value"
     assert isinstance(conf.title.keyword, str)
@@ -38,7 +38,7 @@ def test_external_section():
     class TestConf:
         title: Title
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.title.keyword == "value"
     assert isinstance(conf.title.keyword, str)
@@ -63,7 +63,7 @@ def test_reused_section():
         title1: Title
         title2: Title
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.title1.keyword == "value1"
     assert isinstance(conf.title1.keyword, str)
@@ -89,7 +89,7 @@ def test_list_section():
     class TestConf:
         title: list[Title]
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert isinstance(conf.title, list)
     assert conf.title[0].keyword == "value1"

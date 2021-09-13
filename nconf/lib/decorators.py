@@ -10,35 +10,48 @@ from .util import get_attr_typevals
 from .exceptions import MissingAnnotationException, InvalidFieldTypeException
 
 
-class Config:
-    __nconf_root__: SectionField
-
-    def __new__(cls, dataval=None):
-        if dataval is None:
-            return object.__new__(cls)
-        path = cls.__name__
-        obj = cls.__nconf_root__.parse(dataval, path)
-        return obj
-
-    def __repr__(self):
-        field_names = self.__class__.__nconf_root__.subfields.keys()
-        field_vals = ((name, val) for name, val in self.__dict__.items() if name in field_names)
-        attr_strs = (f"{name}={val!r}" for name, val in field_vals)
-        attrs = ", ".join(attr_strs)
-        return f"{self.__class__.__name__}({attrs})"
+class class_or_instancemethod(classmethod):
+    def __get__(self, instance, type_):
+        descr_get = super().__get__ if instance is None else self.__func__.__get__
+        return descr_get(instance, type_)
 
 
-def _config(cls: type) -> type[Config]:
-    cls: type[Config] = type(cls.__name__, (Config, ), dict(cls.__dict__))
+def _config_repr(self):
+    field_vals = ((name, val) for name, val in self.__dict__.items() if not name.startswith("__"))
+    attr_strs = (f"{name}={val!r}" for name, val in field_vals)
+    attrs = ", ".join(attr_strs)
+    return f"{self.__class__.__name__}({attrs})"
+
+
+@class_or_instancemethod
+def _config_load(cls, dataval):
+    if isinstance(cls, type):
+        self = None
+    else:
+        self = cls
+        cls = self.__class__
+
+    path = cls.__name__
+    obj = cls.__nconf_root__.parse(dataval, path, self)
+    return obj
+
+
+def _config(cls: type, load: str) -> type:
     path = cls.__name__
     fields = get_class_fields(cls, path)
+
+    if load in fields or load in ("__nconf_root__", "__nconf_section__"):
+        raise ValueError(f"Cannot set load function '{load}'. Name already used.")
+
     cls.__nconf_root__ = SectionField(cls, fields)
+    cls.__repr__ = _config_repr
+    setattr(cls, load, _config_load)
     return cls
 
 
-def config(cls=None):
+def config(cls=None, /, *, load="load"):
     def wrap(cls):
-        return _config(cls)
+        return _config(cls, load)
 
     # We're called as @config() with parens.
     if cls is None:
@@ -50,6 +63,7 @@ def config(cls=None):
 
 def _section(cls):
     cls.__nconf_section__ = True
+    cls.__repr__ = _config_repr
     return cls
 
 

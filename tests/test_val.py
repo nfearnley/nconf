@@ -14,7 +14,7 @@ def test_str():
     class TestConf:
         keyword: str
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.keyword == "value"
     assert isinstance(conf.keyword, str)
@@ -31,7 +31,7 @@ def test_int():
     class TestConf:
         keyword: int
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.keyword == 1
     assert isinstance(conf.keyword, int)
@@ -48,7 +48,7 @@ def test_float():
     class TestConf:
         keyword: float
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.keyword == 1.5
     assert isinstance(conf.keyword, float)
@@ -65,7 +65,7 @@ def test_bool():
     class TestConf:
         keyword: float
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.keyword is True
     assert isinstance(conf.keyword, bool)
@@ -84,7 +84,7 @@ def test_datetime():
         without_tz: datetime
         with_tz: datetime
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.without_tz == datetime(1985, 2, 8, 12, 34, 56)
     assert isinstance(conf.without_tz, datetime)
@@ -103,7 +103,7 @@ def test_date():
     class TestConf:
         keyword: date
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.keyword == date(1985, 2, 8)
     assert isinstance(conf.keyword, date)
@@ -120,7 +120,7 @@ def test_time():
     class TestConf:
         keyword: time
 
-    conf = TestConf(conf_data)
+    conf = TestConf.load(conf_data)
 
     assert conf.keyword == time(12, 34, 56)
     assert isinstance(conf.keyword, time)

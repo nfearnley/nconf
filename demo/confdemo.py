@@ -1,4 +1,3 @@
-from nconf.lib.configspec import field
 from pathlib import Path
 import toml
 from nconf import config, section
@@ -11,7 +10,6 @@ class TestConf:
         prefix: str
         name: str
         height: int = 6
-        weight: float = field(default=4)
 
     @section
     class discord:
@@ -25,5 +23,6 @@ class TestConf:
 
 
 p = Path("testdata.conf")
-conf = TestConf(toml.load(p))
+conf = TestConf.load(toml.load(p))
 print(conf)
+    
